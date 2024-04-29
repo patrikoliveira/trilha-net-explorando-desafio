@@ -1,21 +1,30 @@
+using DesafioProjetoHospedagem.Models.Validation;
+using DesafioProjetoHospedagem.Models.Shareds;
+
 namespace DesafioProjetoHospedagem.Models;
 
 public class Pessoa
 {
-    public Pessoa() { }
-
-    public Pessoa(string nome)
-    {
-        Nome = nome;
-    }
-
     public Pessoa(string nome, string sobrenome)
     {
         Nome = nome;
         Sobrenome = sobrenome;
+
+        Validate();
     }
 
-    public string Nome { get; set; }
-    public string Sobrenome { get; set; }
+    private void Validate()
+    {
+        DomainValidation.NotNullOrEmpty(Nome, nameof(Nome));
+        DomainValidation.MinLength(Nome, Constants.MIN_LENGTH, nameof(Nome));
+        DomainValidation.MaxLength(Nome, Constants.MAX_LENGTH, nameof(Nome));
+
+        DomainValidation.NotNullOrEmpty(Sobrenome, nameof(Nome));
+        DomainValidation.MinLength(Sobrenome, Constants.MIN_LENGTH, nameof(Sobrenome));
+        DomainValidation.MaxLength(Sobrenome, Constants.MAX_LENGTH, nameof(Sobrenome));
+    }
+
+    public string Nome { get; private set; }
+    public string Sobrenome { get; private set; }
     public string NomeCompleto => $"{Nome} {Sobrenome}".ToUpper();
 }
